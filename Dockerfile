@@ -1,11 +1,11 @@
-FROM golang:alpine3.18 as build
+FROM golang:alpine AS builder
 
-WORKDIR /
+WORKDIR /src
 COPY . .
 RUN go build -ldflags '-s -w' hello.go
 
 FROM scratch
 
-WORKDIR /app
-COPY --from=build / /app
+WORKDIR /
+COPY --from=builder /src /
 CMD ["./hello"]
